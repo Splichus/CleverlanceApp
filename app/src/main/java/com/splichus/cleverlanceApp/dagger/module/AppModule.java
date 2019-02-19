@@ -4,11 +4,17 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 import com.splichus.cleverlanceApp.Constants;
+import com.splichus.cleverlanceApp.api.service.BackendAPI;
+import com.splichus.cleverlanceApp.service.ImageService;
 
 @Module
 public class AppModule {
@@ -23,5 +29,18 @@ public class AppModule {
     @Singleton
     SharedPreferences sharedPreferences(Application application) {
         return application.getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE);
+    }
+
+    @Provides
+    @Singleton
+    BackendAPI api() {
+        return new Retrofit.Builder().baseUrl(Constants.BASE_URL).addConverterFactory(GsonConverterFactory.create()).build().create(BackendAPI.class);
+    }
+
+    @Provides
+    @Singleton
+    @Inject
+    ImageService imageService(BackendAPI api) {
+        return new ImageService(api);
     }
 }
