@@ -1,4 +1,4 @@
-package com.splichus.cleverlanceApp.service;
+package com.splichus.cleverlanceApp.model;
 
 import android.graphics.Bitmap;
 

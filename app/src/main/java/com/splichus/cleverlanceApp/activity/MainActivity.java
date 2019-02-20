@@ -1,9 +1,6 @@
 package com.splichus.cleverlanceApp.activity;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,12 +8,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.splichus.cleverlanceApp.R;
-import com.splichus.cleverlanceApp.service.ImageListener;
-import com.splichus.cleverlanceApp.service.ImageService;
-
-import java.security.NoSuchAlgorithmException;
+import com.splichus.cleverlanceApp.model.ImageListener;
+import com.splichus.cleverlanceApp.presenter.ImagePresenter;
 
 import javax.inject.Inject;
 
@@ -28,7 +24,7 @@ import dagger.android.AndroidInjection;
 public class MainActivity extends AppCompatActivity implements ImageListener {
 
     @Inject
-    ImageService imageService;
+    ImagePresenter imagePresenter;
 
     @BindView(R.id.main_edittext_username)
     EditText username;
@@ -40,6 +36,8 @@ public class MainActivity extends AppCompatActivity implements ImageListener {
     ImageView imageView;
     @BindView(R.id.main_progress_bar)
     ProgressBar progressBar;
+    @BindView(R.id.main_error_message)
+    TextView errorlog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,18 +45,17 @@ public class MainActivity extends AppCompatActivity implements ImageListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        imageService.setActivity(this);
+        imagePresenter.setActivity(this);
 
     }
 
     @OnClick(R.id.main_button_submit)
     public void login() {
+        imageView.setVisibility(View.GONE);
+        errorlog.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
-        try {
-            imageService.giveImage(username.getText().toString(), password.getText().toString());
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
+        imagePresenter.giveImage(username.getText().toString(), password.getText().toString());
+
     }
 
     @Override
@@ -70,6 +67,8 @@ public class MainActivity extends AppCompatActivity implements ImageListener {
 
     @Override
     public void onPictureLoadFail(String error) {
-
+        progressBar.setVisibility(View.GONE);
+        errorlog.setVisibility(View.VISIBLE);
+        errorlog.setText(error);
     }
 }

@@ -14,7 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import com.splichus.cleverlanceApp.Constants;
 import com.splichus.cleverlanceApp.api.service.BackendAPI;
-import com.splichus.cleverlanceApp.service.ImageService;
+import com.splichus.cleverlanceApp.presenter.ImagePresenter;
 
 @Module
 public class AppModule {
@@ -40,7 +40,7 @@ public class AppModule {
     @Provides
     @Singleton
     @Inject
-    ImageService imageService(BackendAPI api) {
-        return new ImageService(api);
+    ImagePresenter imageService(BackendAPI api) {
+        return new ImagePresenter(api);
     }
 }

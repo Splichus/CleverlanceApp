@@ -45,6 +45,21 @@
             android:text="@string/submit" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/main_error_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="poklop"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/main_login_group"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/margin_large"
+        android:textColor="@color/colorPrimary"
+        android:textAllCaps="true"
+        android:textSize="@dimen/text_large"
+        android:textAlignment="center"/>
+
     <ImageView
         android:id="@+id/main_image"
         android:layout_width="300dp"
