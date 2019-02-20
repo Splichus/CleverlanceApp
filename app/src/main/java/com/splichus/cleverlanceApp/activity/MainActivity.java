@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.splichus.cleverlanceApp.R;
 import com.splichus.cleverlanceApp.service.ImageListener;
@@ -37,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements ImageListener {
     Button submit;
     @BindView(R.id.main_image)
     ImageView imageView;
+    @BindView(R.id.main_progress_bar)
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements ImageListener {
 
     @OnClick(R.id.main_button_submit)
     public void login() {
+        progressBar.setVisibility(View.VISIBLE);
         try {
             imageService.giveImage(username.getText().toString(), password.getText().toString());
         } catch (NoSuchAlgorithmException e) {
@@ -59,7 +63,13 @@ public class MainActivity extends AppCompatActivity implements ImageListener {
 
     @Override
     public void onPictureLoaded(Bitmap picture) {
+        progressBar.setVisibility(View.GONE);
         imageView.setVisibility(View.VISIBLE);
         imageView.setImageBitmap(picture);
+    }
+
+    @Override
+    public void onPictureLoadFail(String error) {
+
     }
 }
